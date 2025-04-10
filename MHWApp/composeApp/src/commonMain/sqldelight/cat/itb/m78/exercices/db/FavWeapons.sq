@@ -1,0 +1,14 @@
+CREATE TABLE FavWeapons (
+    weaponid INTEGER PRIMARY KEY NOT NULL
+);
+
+
+selectAll:
+SELECT * FROM FavWeapons;
+
+insertWeapon:
+INSERT INTO FavWeapons(weaponid)
+VALUES(?);
+
+deleteWeapon:
+DELETE FROM FavWeapons WHERE weaponid = ?;

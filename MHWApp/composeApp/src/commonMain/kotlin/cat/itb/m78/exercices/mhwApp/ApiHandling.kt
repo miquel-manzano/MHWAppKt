@@ -12,12 +12,35 @@ import kotlinx.serialization.json.Json
 @Serializable
 data class Weapon(
     @SerialName("id") val weaponId: Int,
-    @SerialName("name") val weaponName: String
-)
+    @SerialName("name") val weaponName: String,
+    @SerialName("assets") val weaponAssets: Assets? = null
+){
+    @Serializable
+    data class Assets(
+        @SerialName("icon") val weaponIcon: String? = null,
+        @SerialName("image") val weaponImage: String? = null
+    )
+}
+
+@Serializable
+data class WeaponDetail(
+    @SerialName("id") val weaponId: Int,
+    @SerialName("type") val weaponType: String,
+    @SerialName("rarity") val weaponRarity: Int,
+    @SerialName("damageType") val weaponDamageType: String,
+    @SerialName("name") val weaponName: String,
+    @SerialName("assets") val weaponAssets: Assets
+){
+    @Serializable
+    data class Assets(
+        @SerialName("icon") val weaponIcon: String? = null,
+        @SerialName("image") val weaponImage: String? = null
+    )
+}
 
 
 object ApiMHW {
-    private const val URLW = "https://mhw-db.com/weapons/"
+    private const val URL = "https://mhw-db.com/weapons/"
     private val client = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
@@ -25,6 +48,6 @@ object ApiMHW {
             })
         }
     }
-    suspend fun list() = client.get(URLW).body<List<Weapon>>()
-    //suspend fun selectGame(id: Int) = client.get(URLFind + id).body<Weapon>()
+    suspend fun list() = client.get(URL).body<List<Weapon>>()
+    suspend fun detail(id: String) = client.get(URL + id).body<WeaponDetail>()
 }
